@@ -1,0 +1,181 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Array Ex - Cards</title>
+
+    <script src="utils.js"></script>
+
+    <style type="text/css">
+
+        img {
+            height: 100px;
+            border: 2px solid red;
+            margin-left: 10px;
+        }
+
+        #container {
+            width: 220px;
+        }
+
+            #container > div {
+                float: left;
+                width: 50%;
+                text-align: center;
+            }
+    </style>
+    <script>
+
+
+        function shuffle(a) {
+            var j;
+            for (var i = a.length - 1; i > 0; i--) {
+                j = Math.floor(Math.random() * i);
+                x = a[i];
+                a[i] = a[j];
+                a[j] = x;
+            }
+            return a;
+        }
+
+        function fight(P1, P2) {
+            var test = 0;
+            var test1 = 0;
+            var count1 = 0;
+            var count2 = 0;
+            for (i = 0; i < 26; i++) {
+                test = P2[0].realnumberofthecard;
+                test1 = P2[0];
+
+                if (P2[i].realnumberofthecard < P1[i].realnumberofthecard) {
+                    count2++;
+                }
+
+                if (P2[i].realnumberofthecard > P1[i].realnumberofthecard) {
+                    count1++;
+                }
+
+                if (P2[i].realnumberofthecard == P1[i].realnumberofthecard) {
+                    count1++;
+                    count2++;
+                }
+            }
+            //console.log(count1);
+            //console.log(count2);
+            return [count1, count2];
+        }
+
+
+        function start() {
+            var CardsType = ["clubs", "diamonds", "hearts", "spades"];
+            var numbers = [2, 3, 4, 5, 6, 7, 8, 9, 10, "jack", "queen", "king", "ace"];
+            var arr = [];
+            var k = 2;
+            var res = [];
+            for (var i in CardsType) {
+                for (var j in numbers) {
+
+                    var obj = new Object();
+                    obj.num = numbers[j];
+                    obj.type = CardsType[i];
+
+
+                    // card num
+                    obj.realnumberofthecard = k;
+
+                    // print card num
+                   // console.log(obj.realnumberofthecard);
+
+                    var x = numbers[j];
+                    var y = CardsType[i];
+                    var name = x + "_" + "of" + "_" + y;
+
+                    // myImage(name);
+
+
+                    obj.img = `cardImages/${name}.png`;
+                  //  console.log(obj.img);
+                    arr.push(obj);
+                  //  console.log(obj.num + "_" + "of" + "_" + obj.type);
+                    k++;
+                }
+                k = 2;
+            }
+
+            var obj = {
+                num: "joker",
+                type: "red",
+                realnumberofthecard: 15,
+                img: "cardImages/red_joker.png",
+
+            }
+            arr.push(obj);
+           // console.log(obj.realnumberofthecard);
+           // console.log(obj.type + "_" + obj.num);
+
+            var obj = {
+                num: "joker",
+                type: "black",
+                realnumberofthecard: 15,
+                img: "cardImages/black_joker.png",
+
+            }
+            arr.push(obj);
+           // console.log(obj.realnumberofthecard);
+           // console.log(obj.type + "_" + obj.num);
+
+            arr = shuffle(arr);
+           // console.log(arr);
+
+            let player1 = arr.slice(0, 26);
+            let player2 = arr.slice(27, 53);
+
+
+            res = fight(player1, player2);
+            var num1 = res[0];
+            var num2 = res[1];
+           // console.log(res[0])
+            //console.log(res[1])
+
+            document.getElementById('ph1').innerHTML += res[0];
+            document.getElementById('ph2').innerHTML += res[1];
+            renderCards(player1, num1, player2, num2)
+        }
+
+        function renderCards(pla1, pla2)
+        {
+            var name1;
+            var name2;
+
+            let div = document.getElementById(`ph1`)
+            for (let i = 0; i < 26; i++)
+            {
+                name1 = pla1[i].img;
+                div.innerHTML += `<img src='${name1}'></img>`;
+            }
+
+             div = document.getElementById(`ph2`)
+            for (let i = 0; i < 26; i++)
+            {
+                name2 = pla2[i].img;
+                div.innerHTML += `<img src='${name2}'></img>`;
+            }
+        }
+    </script>
+
+</head>
+<body>
+    <input type="button" value="Start" onclick="start()" />
+    <div id="container">
+        <div id="ph1">
+            Player 1:
+        </div>
+
+        <div id="ph2">
+            Player 2:
+        </div>
+    </div>
+
+</body>
+</html>
